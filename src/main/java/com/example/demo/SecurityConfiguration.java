@@ -30,7 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // tells your app which requests should be authorized
                 .anyRequest().authenticated() // in this case, any request that is authenticated should be permitted
                 .and() // adds addt'l rules
-                .formLogin(); // tells spring app should show log in form
+                .formLogin().loginPage("/login").permitAll(); // means you are expecting a login form,
+                                                            // which will display when you visit the route /login and
+                                                            // everyone can see it even if they're not authenticated
+                                                            // this is the page ppl see if they've not logged in yet
     }
 
     // multiple users can be configured here but atm it is for single in-memory user
@@ -40,5 +43,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("user")
                 .password(passwordEncoder().encode("password"))
                 .authorities("USER");
+
+        // add another user
+        auth.inMemoryAuthentication().withUser("admin")
+                .password(passwordEncoder().encode("masterkey"))
+                .authorities("ADMIN");
     }
 }

@@ -1,0 +1,33 @@
+<!-- this page is displayed when users visit a page that req's authentication.
+this page will receive user input and pas it on to Spring Security.
+so it will need to have fields that SpringSecurity can use for authetication,
+specifically, 'username' and 'password'.
+if authenticated, user is allowed to see the page -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+    <h1>Login Page</h1>
+
+    <div th:if="${param.error}">    <!-- this displays an error msg if login details are incorrect-->
+        Invalid username or password
+    </div>
+
+    <div th:if="${param.logout}">
+        You have been logged out
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div><label>User name: <input type="text" name="username" />
+        </label></div>
+
+        <div><label>Password: <input type="password" name="password" />
+        </label></div>
+
+        <div><input type="submit" value="Sign in" /></div>
+    </form>
+</body>
+</html>
