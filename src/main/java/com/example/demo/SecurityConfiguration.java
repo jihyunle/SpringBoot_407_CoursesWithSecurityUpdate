@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Restricts access to routes
         http
                 .authorizeRequests()
-                .antMatchers("/", "/h2-console/**").permitAll()
+                .antMatchers("/", "/h2-console/**", "/register", "/logoutconfirm").permitAll()
                 .anyRequest().authenticated()
                 // ^ any request that is authenticated should be permitted
 
@@ -56,11 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutRequestMatcher(
                         new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").permitAll().permitAll()
+                .logoutSuccessUrl("/logoutconfirm").permitAll() // if logout is successful it'll take us back to logout page.
 
-                // new addition in 4.04
                 .and()
-                .httpBasic();
+                .httpBasic(); // browser identifies you as a user. not good for security, remove for real apps
 
         http
                 .csrf().disable();

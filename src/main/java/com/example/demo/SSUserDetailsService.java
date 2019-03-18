@@ -27,15 +27,11 @@ public class SSUserDetailsService implements UserDetailsService {
             User appUser = userRepository.findByUsername(username);
 
             if (appUser == null){
-                System.out.println("User not found with the procided username" + appUser.toString());
+                System.out.println("User not found with the provided username" + appUser.toString());
                 return null;
             }
 
             System.out.println(" User from username " + appUser.toString());
-//            return new org.springframework.security.core.userdetails.User(
-//                    appUser.getUsername(),
-//                    appUser.getPassword(),
-//                    getAuthorities(appUser));
             return new CustomUserDetails(appUser, getAuthorities(appUser));
         }
         catch (Exception e) {
@@ -47,7 +43,8 @@ public class SSUserDetailsService implements UserDetailsService {
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         for (Role role : appUser.getRoles()){
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.getRole());
+            GrantedAuthority grantedAuthority =
+                    new SimpleGrantedAuthority(role.getRole());
             authorities.add(grantedAuthority);
         }
 
