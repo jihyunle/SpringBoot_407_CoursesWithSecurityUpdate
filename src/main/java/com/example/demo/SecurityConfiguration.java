@@ -2,13 +2,16 @@
 
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -24,31 +27,45 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private SSUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserRepository appUserRepository;
+
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception{
+        return new SSUserDetailsService(appUserRepository);
+    }
+
     // The configure() method configures users who can access the app.
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         // Restricts access to routes
-        http.authorizeRequests()
-                .antMatchers("/")
-                .access("hasAnyAuthority('USER','ADMIN')")
-                // .access() breaks if I also add 'USER2'
-                // 'USER' is a type of authority and includes "USER2"
-                .antMatchers("/admin").access("hasAuthority('ADMIN')")
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/h2-console/**").permitAll()
+                .anyRequest().authenticated()
+                // ^ any request that is authenticated should be permitted
 
-                .anyRequest().authenticated() // in this case, any request that is authenticated should be permitted
-                .and() // adds addt'l rules
+                .and()
                 .formLogin().loginPage("/login").permitAll()
-                // this is the page ppl see if they've not logged in yet
-                // means you are expecting a login form, which will display when you visit the route /login and
-                // everyone can see it even if they're not authenticated
+                // ^ this is the page ppl see if they've not logged in yet
 
                 .and()
                 .logout()
                 .logoutRequestMatcher(
-                        new AntPathRequestMatcher("/logout")
+                        new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login").permitAll().permitAll()
 
-                )
-                .logoutSuccessUrl("/login").permitAll();
+                // new addition in 4.04
+                .and()
+                .httpBasic();
+
+        http
+                .csrf().disable();
+        http
+                .headers().frameOptions().disable();
     }
 
     // multiple users can be configured here but atm it is for single in-memory user
@@ -56,22 +73,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 
-        auth.inMemoryAuthentication()
-                .withUser("user")
-                .password(passwordEncoder().encode("password"))
-                .authorities("USER")
+        auth.userDetailsService(userDetailsServiceBean())
+                .passwordEncoder(passwordEncoder());
 
-                .and()
-                // add another user
-                .withUser("user2")
-                .password(passwordEncoder().encode("password2"))
-                .authorities("USER")
-                // .authorities() defines the access type
+//        auth.inMemoryAuthentication()
+//                .withUser("user")
+//                .password(passwordEncoder().encode("password"))
+//                .authorities("USER")
+//
+//                .and()
+//                // add another user
+//                .withUser("user2")
+//                .password(passwordEncoder().encode("password2"))
+//                .authorities("USER")
+//                // .authorities() defines the access type
+//
+//                .and()
+//                // add admin
+//                .withUser("admin")
+//                .password(passwordEncoder().encode("masterpassword"))
+//                .authorities("ADMIN");
 
-                .and()
-                // add admin
-                .withUser("admin")
-                .password(passwordEncoder().encode("masterpassword"))
-                .authorities("ADMIN");
     }
 }
