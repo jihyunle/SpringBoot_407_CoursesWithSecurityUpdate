@@ -44,12 +44,17 @@ public class DataLoader implements CommandLineRunner {
 
         /* These are my insert commands for course repository */
         Course course = new Course("Astrophysics", "Neil D Tyson", "Just a course on stars", 3);
+        course.setUser(user); // admin
         courseRepository.save(course);
 
         course = new Course("Calculus", "Carol Henley", "Rate of Change of the Rate of Change", 3);
+        course.setUser(user); // admin
         courseRepository.save(course);
 
         course = new Course("Freshman English", "Geraldine Pegram", "Learn your language children", 3);
+        // add jim as user
+        user = userRepository.findByUsername("jim");
+        course.setUser(user);
         courseRepository.save(course);
 
     }

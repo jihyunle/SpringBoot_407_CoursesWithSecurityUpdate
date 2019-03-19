@@ -19,7 +19,7 @@
                 <th>Credits</th>
                 <th>Actions</th>
             </tr>
-            <tr th:each="course : ${courses}">  <!-- using Thymeleaf loop -->
+            <tr th:each="course : ${courses}">  <!-- Thymeleaf's enhanced for loop -->
                 <td th:text="${course.title}"></td>
                 <td th:text="${course.instructor}"></td>
                 <td th:text="${course.credit}"></td>

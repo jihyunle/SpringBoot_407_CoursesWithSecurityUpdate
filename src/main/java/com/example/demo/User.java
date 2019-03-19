@@ -39,7 +39,6 @@ public class User {
     public User(){
 
     }
-
     /* Anytime we create an overloaded constructor we need to have a default no-arg constructor.
      *
       * Also, a jaba bean must have private variables, no-arg constructor, and getters and setters. */
