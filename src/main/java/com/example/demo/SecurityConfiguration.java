@@ -58,6 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logoutconfirm").permitAll() // if logout is successful it'll take us back to logout page.
 
+
                 .and()
                 .httpBasic(); // browser identifies you as a user. not good for security, remove for real apps
 
