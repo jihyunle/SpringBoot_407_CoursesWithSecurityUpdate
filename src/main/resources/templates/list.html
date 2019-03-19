@@ -1,0 +1,44 @@
+<!-- Shows all course listings -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <th:block th:insert="base :: header"></th:block>
+</head>
+<body>
+    <div th:replace="base :: nav"></div>
+
+    <div class="container">
+
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Instructor</th>
+                <th>Credits</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="course : ${courses}">  <!-- using Thymeleaf loop -->
+                <td th:text="${course.title}"></td>
+                <td th:text="${course.instructor}"></td>
+                <td th:text="${course.credit}"></td>
+                <td>
+                    <!-- Any user can update -->
+                    <span th:if="${user_id == course.user.id}">
+                        <a th:href="@{/update/{id}(id=${course.id})}">Update</a>
+                    </span>
+                    <!-- Only admin can delete -->
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>
+                    </div>
+                    <a th:href="@{/detail/{id}(id=${course.id})}">Details</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:replace="base :: footer"></div>
+
+</body>
+</html>

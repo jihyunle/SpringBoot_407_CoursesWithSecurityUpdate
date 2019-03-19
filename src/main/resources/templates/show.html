@@ -1,0 +1,27 @@
+<!-- Shows details of individual course listing -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>All Courses</title>
+    <th:block th:insert="base :: header"></th:block>
+</head>
+<body>
+    <div th:replace="base :: nav"></div>
+
+    <div class="container">
+
+        Title : <span th:text="${course.title}"></span><br>
+        Instructor : <span th:text="${course.instructor}"></span><br>
+        Description : <p th:text="${course.description}"></p>
+        Credits : <span th:text="${course.credit}"></span><br>
+
+        <a th:href="@{/delete/{id}(id=${course.id})}">Delete this course</a>
+
+    </div>
+
+    <div th:replace="base :: footer"></div>
+
+</body>
+</html>

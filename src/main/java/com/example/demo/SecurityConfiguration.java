@@ -54,10 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .logout()
-                .logoutRequestMatcher(
-                        new AntPathRequestMatcher("/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logoutconfirm").permitAll() // if logout is successful it'll take us back to logout page.
-
 
                 .and()
                 .httpBasic(); // browser identifies you as a user. not good for security, remove for real apps
@@ -72,27 +70,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // you can further specify how users are granted access to app if their details are stored in db
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-
         auth.userDetailsService(userDetailsServiceBean())
                 .passwordEncoder(passwordEncoder());
-
-//        auth.inMemoryAuthentication()
-//                .withUser("user")
-//                .password(passwordEncoder().encode("password"))
-//                .authorities("USER")
-//
-//                .and()
-//                // add another user
-//                .withUser("user2")
-//                .password(passwordEncoder().encode("password2"))
-//                .authorities("USER")
-//                // .authorities() defines the access type
-//
-//                .and()
-//                // add admin
-//                .withUser("admin")
-//                .password(passwordEncoder().encode("masterpassword"))
-//                .authorities("ADMIN");
 
     }
 }

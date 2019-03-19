@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add Course</title>
+    <th:block th:insert="base :: header"></th:block>
+</head>
+<body>
+
+    <div th:replace="base :: nav"></div>
+
+    <div class="container">
+        <form action="#" th:action="@{/process}" th:object="${course}"
+              method="post">
+            <input type="hidden" th:field="*{id}">
+
+            Title :<input type="text" th:field="*{title}">
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
+
+            Instructor :<input type="text" th:field="*{instructor}">
+            <span th:if="${#fields.hasErrors('instructor')}" th:errors="*{instructor}"></span><br>
+
+            Description :<input type="text" th:field="*{description}">
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span><br>
+
+            Credits :<input type="text" th:field="*{credit}">
+            <span th:if="${#fields.hasErrors('credit')}" th:errors="*{credit}"></span><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div th:replace="base :: footer"></div>
+
+</body>
+</html>

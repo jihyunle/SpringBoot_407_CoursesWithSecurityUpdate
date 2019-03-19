@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
@@ -8,12 +9,13 @@
 
 </head>
 <body>
-    <h3>Secure Page</h3>
-    <a href="/logout">logout</a>
-    <h4>email</h4>
-    <p th:text="${myuser.email}"></p><br />
-    <h4>last name</h4>
-    <p th:text="${myuser.lastName}"></p>
-
+    <div class="container">
+        <h3>Secure Page</h3>
+        <a href="/logout">logout</a>
+        <h4>email</h4>
+        <p th:text="${myuser.email}"></p><br />
+        <h4>last name</h4>
+        <p th:text="${myuser.lastName}"></p>
+    </div>
 </body>
 </html>
