@@ -55,6 +55,7 @@ public class DataLoader implements CommandLineRunner {
         // add jim as user
         user = userRepository.findByUsername("jim");
         course.setUser(user);
+
         courseRepository.save(course);
 
     }
