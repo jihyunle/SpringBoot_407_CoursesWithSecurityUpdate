@@ -78,11 +78,12 @@ public class HomeController {
     }
 
     @PostMapping("/process")
-    public String processForm(@Valid Course course, BindingResult result){
+    public String processForm(@Valid Course course, BindingResult result, Model model){
         if (result.hasErrors()){
             return "courseform";
         }
-        course.setUser(userService.getUser());  // when you're submitting the form on update, this allows us to retrieve the principal user
+        model.addAttribute("user", userService.getUser());
+//        course.setUser(userService.getUser());  // when you're submitting the form on update, this allows us to retrieve the principal user
         courseRepository.save(course);
         return "redirect:/";
     }
@@ -93,9 +94,16 @@ public class HomeController {
         return "show";
     }
 
+//    @RequestMapping("/update/{id}")
+//    public String updateCourse(@PathVariable("id") long id, Model model){
+//        model.addAttribute("course", courseRepository.findById(id).get());
+//        return "courseform";
+//    }
+
     @RequestMapping("/update/{id}")
     public String updateCourse(@PathVariable("id") long id, Model model){
         model.addAttribute("course", courseRepository.findById(id).get());
+        model.addAttribute("user", userService.getUser());
         return "courseform";
     }
 
