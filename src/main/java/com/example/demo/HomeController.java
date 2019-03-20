@@ -82,7 +82,7 @@ public class HomeController {
         if (result.hasErrors()){
             return "courseform";
         }
-        course.setUser(userService.getUser());
+        course.setUser(userService.getUser());  // when you're submitting the form on update, this allows us to retrieve the principal user
         courseRepository.save(course);
         return "redirect:/";
     }
