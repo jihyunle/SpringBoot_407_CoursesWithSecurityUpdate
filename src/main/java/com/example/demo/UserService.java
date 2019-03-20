@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -46,12 +47,13 @@ public class UserService {
 
     // returns currently logged in user
     public User getUser(){
+        // retrieve the currently authenticated principal via a static call to SecurityContextHolder
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String currentusername = authentication.getName();
-
-        User user = userRepository.findByUsername(currentusername);
-
-        return user;
+        // check if there is an authenticated user
+//        if (!(authentication instanceof AnonymousAuthenticationToken)){
+            String currentPrincipalName = authentication.getName();
+//        }
+            User user = userRepository.findByUsername(currentPrincipalName);
+            return user;
     }
 }

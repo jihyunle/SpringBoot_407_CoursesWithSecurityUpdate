@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -43,6 +44,21 @@ public class HomeController {
     public String login(){
         return "login";
     }
+
+
+    /* taken from:
+     * https://www.baeldung.com/get-user-in-spring-security */
+    @GetMapping("/username")
+    @ResponseBody
+    public String currentUsername(Principal principal){
+        return principal.getName();
+    }
+//    @GetMapping("/username")
+//    @ResponseBody
+//    public String currentUsernameSimple(HttpServletRequest request){
+//        Principal principal = request.getUserPrincipal();
+//        return principal.getName();
+//    }
 
 
     @RequestMapping("/")
