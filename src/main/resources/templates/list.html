@@ -28,7 +28,6 @@
                 </tr>
             </thead>
             <tbody>
-            <!-- See Josiah's carlisting app, base html for customising the look of table-->
                 <tr th:each="course : ${courses}">  <!-- Thymeleaf's enhanced for loop -->
                     <td th:text="${course.title}"></td>
                     <td th:text="${course.instructor}"></td>
