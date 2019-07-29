@@ -4,8 +4,9 @@ so it will need to have fields that SpringSecurity can use for authetication,
 specifically, 'username' and 'password'.
 if authenticated, user is allowed to see the page -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org"
-      xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Login Page</title>
@@ -41,5 +42,6 @@ if authenticated, user is allowed to see the page -->
 
     <div th:replace="base :: footer"></div>
 
+    <div th:replace="base :: jslinks"></div>
 </body>
 </html>
