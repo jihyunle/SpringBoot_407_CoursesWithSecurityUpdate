@@ -1,8 +1,8 @@
 <!-- Shows all course listings -->
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
@@ -11,7 +11,7 @@
     <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
-    <div th:replace="base :: nav"></div>
+    <nav th:replace="base :: nav"></nav>
 
     <div class="container">
 
@@ -23,26 +23,28 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Instructor</th>
-                    <th scope="col">Credits</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Credits</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="course : ${courses}">  <!-- Thymeleaf's enhanced for loop -->
+
                     <td th:text="${course.title}"></td>
                     <td th:text="${course.instructor}"></td>
                     <td th:text="${course.description}"></td>
                     <td th:text="${course.credit}"></td>
                     <td>
-                        <!-- Any user can update -->
-                        <!--<span th:if="${user_id == course.user.id}">-->
+
+                        <!-- Only authorized user can update -->
+                        <span th:if="${user_id == course.user.id}">
                             <a th:href="@{/update/{id}(id=${course.id})}">Update</a>
                         <!--</span>-->
                         <!-- Only admin can delete -->
-                        <div sec:authorize="hasAuthority('ADMIN')">
+                        <span sec:authorize="hasAuthority('ADMIN')">
                             <a th:href="@{/delete/{id}(id=${course.id})}">Delete</a>
-                        </div>
+                        </span>
                         <a th:href="@{/detail/{id}(id=${course.id})}">Details</a>
                     </td>
                 </tr>
@@ -51,6 +53,8 @@
     </div>
 
     <div th:replace="base :: footer"></div>
+
+    <div th:replace="base :: jslinks"></div>
 
 </body>
 </html>

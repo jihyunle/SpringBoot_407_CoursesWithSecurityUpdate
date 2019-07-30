@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -43,23 +42,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         // Restricts access to routes
         http
-                .authorizeRequests()
-                .antMatchers("/", "/h2-console/**", "/register", "/logoutconfirm").permitAll()
+        .authorizeRequests()
+                .antMatchers("/", "/h2/**").permitAll()
+                .antMatchers("/register", "/logoutconfirm", "/detail/**").permitAll()
                 .anyRequest().authenticated()
-                // ^ any request that is authenticated should be permitted
-
+                // ^ any other request needs to be authenticated
                 .and()
-                .formLogin().loginPage("/login").permitAll()
-                // ^ this is the page ppl see if they've not logged in yet
-
+        .formLogin()
+                .loginPage("/login").permitAll()
+                // ^ this is the page ppl see if they have not logged in yet
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/logoutconfirm").permitAll() // if logout is successful it'll take us back to logout page.
-
                 .and()
                 .httpBasic(); // browser identifies you as a user. not good for security, remove for real apps
 
+        // we're disabling two security features here. consider deleting...
         http
                 .csrf().disable();
         http
@@ -70,7 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // you can further specify how users are granted access to app if their details are stored in db
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(userDetailsServiceBean())
+        auth
+                .userDetailsService(userDetailsServiceBean())
                 .passwordEncoder(passwordEncoder());
 
     }

@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name="User_Data")
@@ -36,12 +37,18 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+    /* Added this to User class for one-to-many relationship with Course class */
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER)
+    private Set<Course> courses;
+
     public User(){
 
     }
     /* Anytime we create an overloaded constructor we need to have a default no-arg constructor.
      *
-      * Also, a jaba bean must have private variables, no-arg constructor, and getters and setters. */
+      * A java bean must have private variables, no-arg constructor, and getters and setters. */
 
     public User(String email, String password, String firstName, String lastName, boolean enabled, String username) {
         this.setEmail(email);
@@ -73,8 +80,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder =
-                new BCryptPasswordEncoder();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
     }
 
@@ -116,5 +122,18 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    @Override
+    public String toString(){
+        return getUsername();
     }
 }
