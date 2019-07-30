@@ -13,7 +13,8 @@ import java.util.Set;
 
 @Transactional
 @Service
-public class SSUserDetailsService implements UserDetailsService {
+public class SSUserDetailsService
+        implements UserDetailsService {
 
     private UserRepository userRepository;
 

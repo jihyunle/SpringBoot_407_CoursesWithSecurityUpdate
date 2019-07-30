@@ -42,8 +42,8 @@ public class HomeController {
         if (result.hasErrors()){
             return "courseform";
         }
-        model.addAttribute("user", userService.getUser());
 
+        model.addAttribute("user", userService.getUser());
         course.setUser(userService.getUser());  // allows us to retrieve the principal user and set as course's user
         courseRepository.save(course);
         return "redirect:/";

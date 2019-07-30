@@ -47,7 +47,8 @@ public class UserService {
     // returns currently logged in user
     public User getUser(){
         // retrieve the currently authenticated principal via a static call to SecurityContextHolder
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
         // check if there is an authenticated user
 //        if (!(authentication instanceof AnonymousAuthenticationToken)){
             String currentPrincipalName = authentication.getName();
