@@ -42,8 +42,8 @@ public class HomeController {
         if (result.hasErrors()){
             return "courseform";
         }
-
         model.addAttribute("user", userService.getUser());
+
         course.setUser(userService.getUser());  // allows us to retrieve the principal user and set as course's user
         courseRepository.save(course);
         return "redirect:/";
@@ -67,12 +67,18 @@ public class HomeController {
 
     @RequestMapping("/delete/{id}")
     public String delCourse(@PathVariable("id") long id){
+//        courseRepository.findById(id).get().setUser(null);
         courseRepository.deleteById(id);
         return "redirect:/";
     }
 
+    /* Addition for separate log out page */
+    @RequestMapping("/logoutconfirm")
+    public String logoutconfirm(){
+        return "logoutconfirm";
+    }
 
-//    @RequestMapping("/secure")
+    //    @RequestMapping("/secure")
 //    public String secure(Principal principal, Model model){
 //        User myuser =
 //                (
@@ -81,12 +87,6 @@ public class HomeController {
 //        model.addAttribute("myuser", myuser);
 //        return "secure";
 //    }
-
-    /* Addition for separate log out page */
-    @RequestMapping("/logoutconfirm")
-    public String logoutconfirm(){
-        return "logoutconfirm";
-    }
 
 
 }
