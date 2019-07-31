@@ -16,9 +16,10 @@
               th:action="@{/process}"
               th:object="${course}"
               method="post">
-            <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{user}" th:value="${user}">
 
+            <input type="hidden" th:field="*{id}">
+
+            <input type="hidden" th:field="*{user}" th:value="${user}">
 
             Title :<input type="text" th:field="*{title}">
             <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
